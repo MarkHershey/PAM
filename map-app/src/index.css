@@ -16,3 +16,10 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
 }
+
+img.leaflet-tile, img.leaflet-marker-icon, img.leaflet-marker-shadow {
+    /* work-around from here: https://github.com/Leaflet/Leaflet/issues/161 */
+    outline: 1px solid transparent;
+    /* work-around from here: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+    mix-blend-mode: plus-lighter;
+}

@@ -1,5 +1,11 @@
 # PAM - Personal Activity Map
 
+## Dependencies
+
+-   Python 3.6+
+-   NodeJS
+-   npm
+
 ## API & Libraries
 
 -   [OSMnx: Python for Street Networks](https://geoffboeing.com/2016/11/osmnx-python-street-networks/)
