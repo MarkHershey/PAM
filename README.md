@@ -1,4 +1,4 @@
-# PAM - Personal Activity Map
+# Urban Adventures: Visualizing a Person's Journey through the City
 
 ## Dependencies
 
