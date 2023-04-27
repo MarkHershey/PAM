@@ -1,7 +1,11 @@
 import json
 import os
+import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
+
+from google import query_route
+from utils import decode_polyline
 
 TAKE_OUT_DIR = Path("/Users/markhuang/Downloads/Takeout")
 assert TAKE_OUT_DIR.exists(), "Data directory (Google Takeout) does not exist."
@@ -460,6 +464,75 @@ def filter_all():
     return master_segs
 
 
+def query_google():
+    seg_data_path = PROCESSED_TL_DIR / "filtered_master_segments.json"
+    with seg_data_path.open("r") as f:
+        segments = json.load(f)
+
+    routes_commute = []
+    routes_walk = []
+    routes_drive = []
+    commute_dist = 0
+    walk_dist = 0
+    drive_dist = 0
+
+    for i, segment in enumerate(segments):
+        origin = segment["startLatLng"]
+        destination = segment["endLatLng"]
+        activityType = segment["activityType"]
+        distance = segment["distance"]
+        if activityType == "Walk":
+            mode = "walking"
+            routes = routes_walk
+            walk_dist += int(distance)
+        elif activityType == "Commute":
+            mode = "transit"
+            routes = routes_commute
+            commute_dist += int(distance)
+        elif activityType == "Drive":
+            mode = "driving"
+            routes = routes_drive
+            drive_dist += int(distance)
+        else:
+            continue
+
+        sample_routes = {
+            "coordinates": [],
+            "ploylines": [],
+            "metadata": [],
+        }
+
+        encoded_polyline_str, meta = query_route(origin, destination, mode=mode)
+        if encoded_polyline_str:
+            coords = decode_polyline(encoded_polyline_str)
+            sample_routes["coordinates"].append(coords)
+            sample_routes["ploylines"].append(encoded_polyline_str)
+            sample_routes["metadata"].append(meta)
+            routes.append(sample_routes)
+
+        if i % 100 == 0:
+            # sleep for a while to avoid Google API rate limit
+            time.sleep(60)
+
+    # save routes_commute
+    with open(PROCESSED_TL_DIR / "routes_commute.json", "w") as f:
+        json.dump(routes_commute, f)
+        print(f"Saved routes_commute to {PROCESSED_TL_DIR / 'routes_commute.json'}.")
+        print(f"Toal commute distance: {commute_dist / 1000} km.")
+
+    # save routes_walk
+    with open(PROCESSED_TL_DIR / "routes_walk.json", "w") as f:
+        json.dump(routes_walk, f)
+        print(f"Saved routes_walk to {PROCESSED_TL_DIR / 'routes_walk.json'}.")
+        print(f"Toal walk distance: {walk_dist / 1000} km.")
+
+    # save routes_drive
+    with open(PROCESSED_TL_DIR / "routes_drive.json", "w") as f:
+        json.dump(routes_drive, f)
+        print(f"Saved routes_drive to {PROCESSED_TL_DIR / 'routes_drive.json'}.")
+        print(f"Toal drive distance: {drive_dist / 1000} km.")
+
+
 def main():
 
     monthly_data_dict = get_monthly_data()
@@ -481,4 +554,5 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    filter_all()
+    # filter_all()
+    query_google()
