@@ -112,8 +112,55 @@ def convert_routes2():
             f.write(long_string)
             print("Saved routes to", outfile)
 
+def convert_routes3():
+    ROOT_DIR = Path(__file__).resolve().parent.parent
+
+    PROCESSED_TL_DIR = ROOT_DIR / "python" / "processed_tl"
+
+    files = [
+        "routes_commute.json",
+        "routes_walk.json",
+        "routes_drive.json",
+    ]
+
+    data_dir = project_root / "python/data"
+    routes_dir: Path = project_root / "map-app/src/assets/routes"
+    routes_dir.mkdir(exist_ok=True)
+
+
+    for filename in files:
+        long_string = """import { LatLngExpression } from "leaflet";\n\n"""
+
+
+        mode = filename[:-5].split("_")[1]
+        # capitalize first letter
+        mode = mode[0].upper() + mode[1:]
+
+
+        routefile = PROCESSED_TL_DIR / filename
+        outfile = routes_dir / f"Routes{mode}.ts"
+
+        with open(routefile, "r") as f:
+            data = json.load(f)
+        
+        all_routes = []
+
+        for idx, sample in enumerate(data):
+            coords = sample["coordinates"]
+            all_routes.append(coords)
+        
+        obj_str = json.dumps(all_routes)
+
+        long_string += (
+            f"export const Routes{mode}: LatLngExpression[][][] = {obj_str};\n\n"
+        )
+
+        with open(outfile, "w") as f:
+            f.write(long_string)
+            print("Saved routes to", outfile)
+
 if __name__ == "__main__":
     # routes()
     # points()
-    convert_routes2()
+    convert_routes3()
     ...
