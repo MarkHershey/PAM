@@ -7,6 +7,7 @@ from typing import *
 
 import requests
 from puts import get_logger
+
 from utils import decode_polyline
 
 LOG = get_logger()
@@ -20,7 +21,9 @@ if not API_KEY:
 
 
 def query_route(
-    origin: Tuple[float, float], destination: Tuple[float, float]
+    origin: Tuple[float, float],
+    destination: Tuple[float, float],
+    mode="walking",
 ) -> Tuple[str, dict]:
     """
     Query Google Maps API for route between two points (in lat,lng representation).
@@ -28,6 +31,7 @@ def query_route(
     Args:
         origin: (lat,lng) of origin point
         destination: (lat,lng) of destination point
+        mode: mode of transport, default to walking, can be driving, bicycling, transit
 
     Returns:
         Encoded Polyline string
@@ -35,7 +39,7 @@ def query_route(
     """
     ORIGIN = f"{origin[0]},{origin[1]}"
     DESTINATION = f"{destination[0]},{destination[1]}"
-    MODE = "walking"
+    MODE = mode
 
     url = f"https://maps.googleapis.com/maps/api/directions/json?origin={ORIGIN}&destination={DESTINATION}&mode={MODE}&key={API_KEY}"
 
