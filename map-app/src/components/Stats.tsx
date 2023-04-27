@@ -22,7 +22,7 @@ const Stats: React.FC<StatsProps> = ({
         <div className="container mx-auto p-4 flex flex-row justify-center">
             <NumberStats
                 caption="Total Commute Distance"
-                value={237}
+                value={5738}
                 unit="KM"
                 color="#3a86ff"
                 onClick={commuteOnClick}
@@ -30,7 +30,7 @@ const Stats: React.FC<StatsProps> = ({
             />
             <NumberStats
                 caption="Total Driving Distance"
-                value={619}
+                value={2246}
                 unit="KM"
                 color="#8338ec"
                 onClick={drivingOnClick}
@@ -38,7 +38,7 @@ const Stats: React.FC<StatsProps> = ({
             />
             <NumberStats
                 caption="Total Walking Distance"
-                value={56}
+                value={1313}
                 unit="KM"
                 color="#fb5607"
                 onClick={walkingOnClick}

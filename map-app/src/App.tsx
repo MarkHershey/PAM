@@ -5,48 +5,52 @@ import Profile from "./components/Profile";
 import Stats from "./components/Stats";
 import { AVATARS } from "./assets/avatars";
 import { NAMES } from "./assets/names";
-import {
-    multiPolyline0,
-    multiPolyline1,
-    multiPolyline2,
-    multiPolyline3,
-    multiPolyline4,
-    multiPolyline5,
-} from "./assets/routes/RoutesSG";
+// import {
+//     multiPolyline0,
+//     multiPolyline1,
+//     multiPolyline2,
+//     multiPolyline3,
+//     multiPolyline4,
+//     multiPolyline5,
+// } from "./assets/routes/RoutesSG";
 
-const getPolyLines = () => {
-    const multiPolyLines = [
-        multiPolyline0,
-        multiPolyline1,
-        multiPolyline2,
-        multiPolyline3,
-        multiPolyline4,
-        multiPolyline5,
-    ];
+import { RoutesCommute } from "./assets/routes/RoutesCommute";
+import { RoutesWalk } from "./assets/routes/RoutesWalk";
+import { RoutesDrive } from "./assets/routes/RoutesDrive";
 
-    let commutePolyLines =
-        multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
-    commutePolyLines = shuffle(commutePolyLines);
-    commutePolyLines = commutePolyLines.slice(0, commutePolyLines.length / 2);
+// const getPolyLines = () => {
+//     const multiPolyLines = [
+//         multiPolyline0,
+//         multiPolyline1,
+//         multiPolyline2,
+//         multiPolyline3,
+//         multiPolyline4,
+//         multiPolyline5,
+//     ];
 
-    let walkingPolyLines =
-        multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
-    walkingPolyLines = shuffle(walkingPolyLines);
-    walkingPolyLines = walkingPolyLines.slice(0, walkingPolyLines.length / 3);
+//     let commutePolyLines =
+//         multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
+//     commutePolyLines = shuffle(commutePolyLines);
+//     commutePolyLines = commutePolyLines.slice(0, commutePolyLines.length / 2);
 
-    let drivingPolyLines =
-        multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
-    drivingPolyLines = shuffle(drivingPolyLines);
-    drivingPolyLines = drivingPolyLines.slice(0, drivingPolyLines.length / 4);
+//     let walkingPolyLines =
+//         multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
+//     walkingPolyLines = shuffle(walkingPolyLines);
+//     walkingPolyLines = walkingPolyLines.slice(0, walkingPolyLines.length / 3);
 
-    return {
-        commutePolyLines,
-        walkingPolyLines,
-        drivingPolyLines,
-    };
-};
+//     let drivingPolyLines =
+//         multiPolyLines[Math.floor(Math.random() * multiPolyLines.length)];
+//     drivingPolyLines = shuffle(drivingPolyLines);
+//     drivingPolyLines = drivingPolyLines.slice(0, drivingPolyLines.length / 4);
 
-const { commutePolyLines, walkingPolyLines, drivingPolyLines } = getPolyLines();
+//     return {
+//         commutePolyLines,
+//         walkingPolyLines,
+//         drivingPolyLines,
+//     };
+// };
+
+// const { commutePolyLines, walkingPolyLines, drivingPolyLines } = getPolyLines();
 
 const pickNameAndAvatar = () => {
     const avatars = shuffle(AVATARS);
@@ -100,9 +104,9 @@ function App() {
                     showCommute={showCommute}
                     showWalking={showWalking}
                     showDriving={showDriving}
-                    commutePolyLines={commutePolyLines}
-                    walkingPolyLines={walkingPolyLines}
-                    drivingPolyLines={drivingPolyLines}
+                    commutePolyLines={RoutesCommute}
+                    walkingPolyLines={RoutesWalk}
+                    drivingPolyLines={RoutesDrive}
                 />
             </div>
             <div className="container p-4 m-auto">
